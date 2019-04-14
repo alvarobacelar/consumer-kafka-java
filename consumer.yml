@@ -1,6 +1,6 @@
 version: '2'
 services:
-   productor:
+   consumer:
      image: alvarobacelar/consumer-kafka-java:latest
      container_name: consumer-kafka
      environment:
