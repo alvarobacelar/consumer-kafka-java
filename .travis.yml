@@ -1,0 +1,14 @@
+language: java
+
+service:
+  - docker
+  
+env:
+  global:
+    - IMAGE_NAME: alvarobacelar/consumer-kafka-java
+
+script:
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t $IMAGE_NAME:latest .
+  - docker push $IMAGE_NAME:latest
