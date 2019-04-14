@@ -1,7 +1,7 @@
 FROM java:8-jdk-alpine
 
 ENV KAFKA_SERVER localhost \
-    KAFKA_TOPIC topic-test
+    KAFKA_TOPIC topic-test \
     KAFKA_COUNT_MSG 10
 
 WORKDIR /usr/app

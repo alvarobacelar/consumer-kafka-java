@@ -1,0 +1,9 @@
+version: '2'
+services:
+   productor:
+     image: alvarobacelar/consumer-kafka-java:latest
+     container_name: consumer-kafka
+     environment:
+       - KAFKA_SERVER={{ hostvars[groups['kafka'][0]]['ansible_host'] }}
+       - KAFKA_TOPIC=test-topic
+       - KAFKA_COUNT_MSG=100
