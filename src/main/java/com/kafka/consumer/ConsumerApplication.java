@@ -65,11 +65,11 @@ public class ConsumerApplication {
 			// print each record.
 			consumerRecords.forEach(record -> {
 				System.out.printf("------------ message consumer --------- \n");
-				System.out.println("Record Key " + record.key());
-				System.out.println("Record value " + record.value());
-				System.out.println("Record partition " + record.partition());
-				System.out.println("Record offset " + record.offset());
-				System.out.println("Server Kafka " + kafka_server);
+				System.out.println("Record Key: " + record.key());
+				System.out.println("Record value: " + record.value());
+				System.out.println("Record partition: " + record.partition());
+				System.out.println("Record offset: " + record.offset());
+				System.out.println("Server Kafka: " + kafka_server);
 			});
 			// commits the offset of record to broker.
 			consumer.commitAsync();
