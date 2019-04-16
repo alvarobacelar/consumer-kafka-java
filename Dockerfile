@@ -10,4 +10,4 @@ COPY target/consumer-0.0.1-SNAPSHOT.jar /usr/app/consumer-0.0.1-SNAPSHOT.jar
 
 RUN sh -c 'touch consumer-0.0.1-SNAPSHOT.jar'
 
-ENTRYPOINT ["java", "-jar", "/usr/app/consumer-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-Dcom.sun.jndi.ldap.object.disableEndpointIdentification=true", "-jar", "/usr/app/consumer-0.0.1-SNAPSHOT.jar"]

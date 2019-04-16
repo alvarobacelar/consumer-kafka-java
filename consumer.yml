@@ -7,3 +7,5 @@ services:
        - KAFKA_SERVER={{ hostvars[groups['kafka'][0]]['ansible_host'] }}:9092
        - KAFKA_TOPIC=test-topic
        - KAFKA_COUNT_MSG=100
+       - KAFKA_KEY=/root/client.truststore.jks
+       - KAFKA_PASS={{ pass_key_kafka }}
