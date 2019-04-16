@@ -23,13 +23,11 @@ public class ConsumerApplication {
 		runConsumer();
 	}
 
-	public interface IKafkaConstants {
+	public interface KafkaConstants {
 		int num_msg_kafka = Integer.parseInt(kafka_count_msg);
-		public static String KAFKA_BROKERS = kafka_server+":9092";
-		public static Integer MESSAGE_COUNT = 1000;
-		public static String CLIENT_ID = "client1";
+		public static String KAFKA_BROKERS = kafka_server;
 		public static String TOPIC_NAME = kafka_topic;
-		public static String GROUP_ID_CONFIG = "consumerGroup1";
+		public static String GROUP_ID_CONFIG = "consumerGroupItau";
 		public static Integer MAX_NO_MESSAGE_FOUND_COUNT = num_msg_kafka;
 		public static String OFFSET_RESET_LATEST = "latest";
 		public static String OFFSET_RESET_EARLIER = "earliest";
@@ -38,15 +36,15 @@ public class ConsumerApplication {
 
 	public static Consumer<Long, String> createConsumer() {
 		Properties props = new Properties();
-		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, IKafkaConstants.KAFKA_BROKERS);
-		props.put(ConsumerConfig.GROUP_ID_CONFIG, IKafkaConstants.GROUP_ID_CONFIG);
+		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaConstants.KAFKA_BROKERS);
+		props.put(ConsumerConfig.GROUP_ID_CONFIG, KafkaConstants.GROUP_ID_CONFIG);
 		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
 		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-		props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, IKafkaConstants.MAX_POLL_RECORDS);
+		props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, KafkaConstants.MAX_POLL_RECORDS);
 		props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
-		props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, IKafkaConstants.OFFSET_RESET_EARLIER);
+		props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, KafkaConstants.OFFSET_RESET_EARLIER);
 		Consumer<Long, String> consumer = new KafkaConsumer<>(props);
-		consumer.subscribe(Collections.singletonList(IKafkaConstants.TOPIC_NAME));
+		consumer.subscribe(Collections.singletonList(KafkaConstants.TOPIC_NAME));
 		return consumer;
 	}
 
@@ -54,10 +52,10 @@ public class ConsumerApplication {
 		Consumer<Long, String> consumer = createConsumer();
 		int noMessageFound = 0;
 		while (true) {
-			ConsumerRecords<Long, String> consumerRecords = consumer.poll(1000);
+			ConsumerRecords<Long, String> consumerRecords = consumer.poll(10000);
 			if (consumerRecords.count() == 0) {
 				noMessageFound++;
-				if (noMessageFound > IKafkaConstants.MAX_NO_MESSAGE_FOUND_COUNT)
+				if (noMessageFound > KafkaConstants.MAX_NO_MESSAGE_FOUND_COUNT)
 					break;
 				else
 					continue;
@@ -66,10 +64,11 @@ public class ConsumerApplication {
 			consumerRecords.forEach(record -> {
 				System.out.printf("------------ message consumer --------- \n");
 				System.out.println("Record Key: " + record.key());
-				System.out.println("Record value: " + record.value());
+				System.out.println("Record message --> " + record.value());
 				System.out.println("Record partition: " + record.partition());
 				System.out.println("Record offset: " + record.offset());
 				System.out.println("Server Kafka: " + kafka_server);
+				System.out.printf("--------------------------------------- \n");
 			});
 			// commits the offset of record to broker.
 			consumer.commitAsync();
