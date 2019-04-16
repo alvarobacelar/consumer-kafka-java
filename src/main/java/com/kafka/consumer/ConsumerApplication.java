@@ -50,6 +50,10 @@ public class ConsumerApplication {
 		props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SSL");
 		props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, kafka_key);
 		props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, kafka_pass);
+		
+		props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, kafka_key);
+		props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, kafka_pass);
+		props.put(SslConfigs.SSL_KEY_PASSWORD_CONFIG, kafka_pass);
 		Consumer<Long, String> consumer = new KafkaConsumer<>(props);
 		consumer.subscribe(Collections.singletonList(KafkaConstants.TOPIC_NAME));
 		return consumer;
@@ -71,7 +75,7 @@ public class ConsumerApplication {
 			consumerRecords.forEach(record -> {
 				System.out.printf("------------ message consumer --------- \n");
 				System.out.println("Record Key: " + record.key());
-				System.out.println("Record message --> " + record.value());
+				System.out.println("Record value: " + record.value());
 				System.out.println("Record partition: " + record.partition());
 				System.out.println("Record offset: " + record.offset());
 				System.out.println("Server Kafka: " + kafka_server);
