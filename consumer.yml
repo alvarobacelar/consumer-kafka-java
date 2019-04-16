@@ -4,6 +4,6 @@ services:
      image: alvarobacelar/consumer-kafka-java:latest
      container_name: consumer-kafka
      environment:
-             - KAFKA_SERVER={{ hostvars[groups['kafka'][0]]['ansible_host'] }}:9092
+       - KAFKA_SERVER={{ hostvars[groups['kafka'][0]]['ansible_host'] }}:9092
        - KAFKA_TOPIC=test-topic
        - KAFKA_COUNT_MSG=100
