@@ -4,10 +4,12 @@ import java.util.Properties;
 import java.util.Collections;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.config.SslConfigs;
 import org.apache.kafka.common.serialization.LongDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
@@ -17,6 +19,8 @@ public class ConsumerApplication {
 	private static String kafka_server = System.getenv("KAFKA_SERVER");
 	private static String kafka_topic = System.getenv("KAFKA_TOPIC");
 	private static String kafka_count_msg = System.getenv("KAFKA_COUNT_MSG");
+	private static String kafka_key = System.getenv("KAFKA_KEY");
+	private static String kafka_pass = System.getenv("KAFKA_PASS");
 
 	public static void main(String[] args) {
 		SpringApplication.run(ConsumerApplication.class, args);
@@ -43,6 +47,9 @@ public class ConsumerApplication {
 		props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, KafkaConstants.MAX_POLL_RECORDS);
 		props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
 		props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, KafkaConstants.OFFSET_RESET_EARLIER);
+		props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SSL");
+		props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, kafka_key);
+		props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG,  kafka_pass);
 		Consumer<Long, String> consumer = new KafkaConsumer<>(props);
 		consumer.subscribe(Collections.singletonList(KafkaConstants.TOPIC_NAME));
 		return consumer;
