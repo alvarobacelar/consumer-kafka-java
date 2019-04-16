@@ -15,7 +15,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 
 @SpringBootApplication
 public class ConsumerApplication {
-	
+
 	private static String kafka_server = System.getenv("KAFKA_SERVER");
 	private static String kafka_topic = System.getenv("KAFKA_TOPIC");
 	private static String kafka_count_msg = System.getenv("KAFKA_COUNT_MSG");
@@ -49,7 +49,7 @@ public class ConsumerApplication {
 		props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, KafkaConstants.OFFSET_RESET_EARLIER);
 		props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SSL");
 		props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, kafka_key);
-		props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG,  kafka_pass);
+		props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, kafka_pass);
 		Consumer<Long, String> consumer = new KafkaConsumer<>(props);
 		consumer.subscribe(Collections.singletonList(KafkaConstants.TOPIC_NAME));
 		return consumer;
@@ -82,5 +82,5 @@ public class ConsumerApplication {
 		}
 		consumer.close();
 	}
-
+	
 }
